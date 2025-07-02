@@ -6,9 +6,9 @@
 
 @layer base {
   :root {
-    /* Core backgrounds */
-    --background: 248 250 252; /* slate-50 */
-    --foreground: 222.2 84% 4.9%;
+    /* Core backgrounds - Warming tech theme */
+    --background: 222 47% 11%; /* Rich dark blue-gray */
+    --foreground: 210 40% 98%;
 
     /* WhatsApp-inspired greens */
     --whatsapp: 142 51% 58%; /* WhatsApp green */
