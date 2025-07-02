@@ -32,42 +32,42 @@
     --streak: 15 86% 60%; /* Orange for fire/streaks */
     --streak-light: 15 66% 95%;
 
-    /* Card system */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --card-hover: 0 0% 98%;
+    /* Card system - Dark theme compatible */
+    --card: 217.2 32.6% 17.5%; /* Dark cards */
+    --card-foreground: 210 40% 98%; /* Light text on dark cards */
+    --card-hover: 217.2 32.6% 19.5%; /* Slightly lighter on hover */
 
     /* Primary system (WhatsApp green) */
     --primary: 142 51% 58%;
     --primary-foreground: 0 0% 100%;
     --primary-hover: 142 61% 45%;
 
-    /* Secondary system (Learning blue) */
-    --secondary: 217 71% 95%;
-    --secondary-foreground: 217 91% 50%;
+    /* Secondary system (Learning blue) - Darker for better contrast */
+    --secondary: 217.2 32.6% 17.5%; /* Dark secondary */
+    --secondary-foreground: 210 40% 98%; /* Light text */
 
-    /* Muted system */
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    /* Muted system - Better contrast for dark theme */
+    --muted: 217.2 32.6% 15.5%; /* Darker muted background */
+    --muted-foreground: 215 20.2% 75.1%; /* Lighter muted text */
 
-    /* Accent system */
-    --accent: 142 31% 88%;
-    --accent-foreground: 142 51% 28%;
+    /* Accent system - Better visibility */
+    --accent: 217.2 32.6% 17.5%; /* Dark accent */
+    --accent-foreground: 210 40% 98%; /* Light text */
 
     /* Destructive system */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Border system */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    /* Border system - Visible borders on dark background */
+    --border: 217.2 32.6% 25.5%; /* Lighter borders */
+    --input: 217.2 32.6% 20.5%; /* Dark input background */
     --ring: 142 51% 58%;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--whatsapp)), hsl(var(--learning)));
     --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--whatsapp)));
     --gradient-streak: linear-gradient(135deg, hsl(var(--streak)), hsl(var(--warning)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(220 14.3% 99%));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(217.2 32.6% 19.5%));
 
     /* Shadows */
     --shadow-elegant: 0 4px 6px -1px hsl(var(--whatsapp) / 0.1), 0 2px 4px -1px hsl(var(--whatsapp) / 0.06);
