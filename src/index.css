@@ -2,41 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Microlearning Coach Design System - WhatsApp-inspired educational theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Core backgrounds */
+    --background: 248 250 252; /* slate-50 */
     --foreground: 222.2 84% 4.9%;
 
+    /* WhatsApp-inspired greens */
+    --whatsapp: 142 51% 58%; /* WhatsApp green */
+    --whatsapp-dark: 142 61% 45%;
+    --whatsapp-light: 142 31% 88%;
+    
+    /* Learning-focused colors */
+    --learning: 217 91% 60%; /* Blue for knowledge */
+    --learning-dark: 217 91% 50%;
+    --learning-light: 217 71% 95%;
+    
+    /* Success & achievement */
+    --success: 142 76% 36%;
+    --success-light: 142 56% 88%;
+    
+    /* Warning & attention */
+    --warning: 38 92% 50%;
+    --warning-light: 38 72% 92%;
+    
+    /* Progress & streaks */
+    --streak: 15 86% 60%; /* Orange for fire/streaks */
+    --streak-light: 15 66% 95%;
+
+    /* Card system */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
+    --card-hover: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Primary system (WhatsApp green) */
+    --primary: 142 51% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 142 61% 45%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Secondary system (Learning blue) */
+    --secondary: 217 71% 95%;
+    --secondary-foreground: 217 91% 50%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted system */
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent system */
+    --accent: 142 31% 88%;
+    --accent-foreground: 142 51% 28%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    /* Destructive system */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Border system */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 142 51% 58%;
 
-    --radius: 0.5rem;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--whatsapp)), hsl(var(--learning)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--whatsapp)));
+    --gradient-streak: linear-gradient(135deg, hsl(var(--streak)), hsl(var(--warning)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(220 14.3% 99%));
+
+    /* Shadows */
+    --shadow-elegant: 0 4px 6px -1px hsl(var(--whatsapp) / 0.1), 0 2px 4px -1px hsl(var(--whatsapp) / 0.06);
+    --shadow-card: 0 1px 3px 0 hsl(220 43% 11% / 0.1), 0 1px 2px 0 hsl(220 43% 11% / 0.06);
+    --shadow-hover: 0 10px 15px -3px hsl(var(--whatsapp) / 0.1), 0 4px 6px -2px hsl(var(--whatsapp) / 0.05);
+
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
