@@ -7,7 +7,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Auth from "./pages/Auth";
 import Index from "./pages/Index";
-import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import CreateLesson from "./pages/CreateLesson";
 import Messages from "./pages/Messages";
@@ -15,9 +14,9 @@ import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
-<<<<<<< HEAD
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
@@ -62,20 +61,6 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
-=======
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/settings" element={<Settings />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
->>>>>>> dc1848ad27b7870efea394e741e4e9c2d6aa0c63
   </QueryClientProvider>
 );
 
