@@ -7,6 +7,7 @@ import { LessonCard } from "@/components/LessonCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import {
   Users,
   MessageSquare,
@@ -82,9 +83,15 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8 max-w-7xl">
         {/* Header */}
         <DashboardHeader
+<<<<<<< HEAD
           onCreateLesson={() => navigate('/create-lesson')}
           onViewMessages={() => navigate('/messages')}
           onSettings={() => navigate('/settings')}
+=======
+          onCreateLesson={() => console.log("Create lesson")}
+          onViewMessages={() => console.log("View messages")}
+          onSettings={() => window.location.href = "/settings"}
+>>>>>>> dc1848ad27b7870efea394e741e4e9c2d6aa0c63
           unreadNotifications={3}
         />
 
