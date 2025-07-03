@@ -1,7 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Bell, Plus, Settings, MessageSquare } from "lucide-react";
+import { Bell, Plus, Settings, MessageSquare, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DashboardHeaderProps {
   onCreateLesson?: () => void;
@@ -16,6 +17,15 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onSettings,
   unreadNotifications = 0,
 }) => {
+  const { signOut, user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
   return (
     <div className="flex items-center justify-between mb-8">
       <div className="space-y-2">
@@ -69,6 +79,16 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         >
           <Plus className="w-4 h-4" />
           Create Lesson
+        </Button>
+
+        <Button
+          variant="outline"
+          size="default"
+          onClick={handleLogout}
+          className="text-destructive hover:text-destructive"
+        >
+          <LogOut className="w-4 h-4" />
+          Logout
         </Button>
       </div>
     </div>

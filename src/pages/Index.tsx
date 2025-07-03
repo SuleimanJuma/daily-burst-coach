@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { StatCard } from "@/components/ui/stat-card";
 import { ProgressRing } from "@/components/ui/progress-ring";
@@ -74,14 +75,16 @@ const Index = () => {
     { day: "Sun", lessons: 29, completions: 24 },
   ];
 
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-8 max-w-7xl">
         {/* Header */}
         <DashboardHeader
-          onCreateLesson={() => console.log("Create lesson")}
-          onViewMessages={() => console.log("View messages")}
-          onSettings={() => console.log("Settings")}
+          onCreateLesson={() => navigate('/create-lesson')}
+          onViewMessages={() => navigate('/messages')}
+          onSettings={() => navigate('/settings')}
           unreadNotifications={3}
         />
 
