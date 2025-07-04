@@ -9,20 +9,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, User, Bell, BookOpen, CreditCard, Shield, HelpCircle } from "lucide-react";
+import { ArrowLeft, User, Bell, BookOpen, CreditCard, Shield, HelpCircle, Volume2, Vibrate } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useNotifications } from "@/contexts/NotificationContext";
 
 
 const Settings = () => {
+  const { preferences, updatePreferences } = useNotifications();
   const [profile, setProfile] = useState({
     name: "John Doe",
     whatsapp: "+1234567890",
     timezone: "UTC-5"
-  });
-  const [notifications, setNotifications] = useState({
-    enabled: true,
-    time: "09:00",
-    frequency: "daily"
   });
   const [learning, setLearning] = useState({
     topics: ["Business", "English"],
@@ -100,54 +97,113 @@ const Settings = () => {
               <h2 className="text-xl font-semibold text-foreground">Notification Preferences</h2>
             </div>
             <div className="space-y-6">
+              {/* WhatsApp Notifications */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-medium text-foreground">Enable Notifications</h3>
-                  <p className="text-sm text-muted-foreground">Receive lesson reminders and updates</p>
+                  <h3 className="font-medium text-foreground">WhatsApp Notifications</h3>
+                  <p className="text-sm text-muted-foreground">Receive lessons via WhatsApp</p>
                 </div>
                 <Switch
-                  checked={notifications.enabled}
-                  onCheckedChange={(checked) => setNotifications({ ...notifications, enabled: checked })}
+                  checked={preferences.whatsappNotifications}
+                  onCheckedChange={(checked) => updatePreferences({ whatsappNotifications: checked })}
                 />
               </div>
-              
-              {notifications.enabled && (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              {/* Push Notifications */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-foreground">Push Notifications</h3>
+                  <p className="text-sm text-muted-foreground">Browser and desktop notifications</p>
+                </div>
+                <Switch
+                  checked={preferences.pushNotifications}
+                  onCheckedChange={(checked) => updatePreferences({ pushNotifications: checked })}
+                />
+              </div>
+
+              {/* Email Notifications */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-foreground">Email Notifications</h3>
+                  <p className="text-sm text-muted-foreground">Receive updates via email</p>
+                </div>
+                <Switch
+                  checked={preferences.emailNotifications}
+                  onCheckedChange={(checked) => updatePreferences({ emailNotifications: checked })}
+                />
+              </div>
+
+              {/* Sound & Vibration */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="w-4 h-4 text-muted-foreground" />
                     <div>
-                      <Label htmlFor="time">Preferred Time</Label>
-                      <Select value={notifications.time} onValueChange={(value) => setNotifications({ ...notifications, time: value })}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="08:00">8:00 AM</SelectItem>
-                          <SelectItem value="09:00">9:00 AM</SelectItem>
-                          <SelectItem value="10:00">10:00 AM</SelectItem>
-                          <SelectItem value="12:00">12:00 PM</SelectItem>
-                          <SelectItem value="18:00">6:00 PM</SelectItem>
-                          <SelectItem value="20:00">8:00 PM</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="frequency">Frequency</Label>
-                      <Select value={notifications.frequency} onValueChange={(value) => setNotifications({ ...notifications, frequency: value })}>
-                        <SelectTrigger className="mt-1">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="daily">Daily</SelectItem>
-                          <SelectItem value="weekly">Weekly</SelectItem>
-                          <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <h3 className="font-medium text-foreground">Sound</h3>
+                      <p className="text-sm text-muted-foreground">Notification sounds</p>
                     </div>
                   </div>
-                </>
-              )}
+                  <Switch
+                    checked={preferences.soundEnabled}
+                    onCheckedChange={(checked) => updatePreferences({ soundEnabled: checked })}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Vibrate className="w-4 h-4 text-muted-foreground" />
+                    <div>
+                      <h3 className="font-medium text-foreground">Vibration</h3>
+                      <p className="text-sm text-muted-foreground">Device vibration</p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={preferences.vibrationEnabled}
+                    onCheckedChange={(checked) => updatePreferences({ vibrationEnabled: checked })}
+                  />
+                </div>
+              </div>
               
-              <Button className="bg-learning hover:bg-learning-dark text-white">
+              {/* Delivery Settings */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="time">Delivery Time</Label>
+                  <Select value={preferences.deliveryTime} onValueChange={(value) => updatePreferences({ deliveryTime: value })}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="08:00">8:00 AM</SelectItem>
+                      <SelectItem value="09:00">9:00 AM</SelectItem>
+                      <SelectItem value="10:00">10:00 AM</SelectItem>
+                      <SelectItem value="12:00">12:00 PM</SelectItem>
+                      <SelectItem value="14:00">2:00 PM</SelectItem>
+                      <SelectItem value="18:00">6:00 PM</SelectItem>
+                      <SelectItem value="20:00">8:00 PM</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="frequency">Frequency</Label>
+                  <Select value={preferences.frequency} onValueChange={(value) => updatePreferences({ frequency: value as 'daily' | 'weekdays' | 'weekly' })}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekdays">Weekdays only</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <Button 
+                className="bg-learning hover:bg-learning-dark text-white"
+                onClick={() => {
+                  // Save preferences logic here
+                  console.log('Notification preferences saved:', preferences);
+                }}
+              >
                 Save Preferences
               </Button>
             </div>

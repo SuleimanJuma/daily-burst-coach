@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Bell, Plus, Settings, MessageSquare, LogOut } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Plus, Settings, MessageSquare, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { NotificationBell } from "@/components/NotificationBell";
 
 interface DashboardHeaderProps {
   onCreateLesson?: () => void;
@@ -48,19 +48,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           WhatsApp Hub
         </Button>
 
-        <Button
-          variant="outline"
-          size="default"
-          onClick={onSettings}
-          className="relative"
-        >
-          <Bell className="w-4 h-4" />
-          {unreadNotifications > 0 && (
-            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-streak text-white text-xs">
-              {unreadNotifications > 9 ? "9+" : unreadNotifications}
-            </Badge>
-          )}
-        </Button>
+        <NotificationBell />
 
         <Button
           variant="outline"

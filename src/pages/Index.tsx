@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useNotifications } from "@/contexts/NotificationContext";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { StatCard } from "@/components/ui/stat-card";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { LessonCard } from "@/components/LessonCard";
+import { LessonPreviewModal } from "@/components/LessonPreviewModal";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +24,15 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { addNotification } = useNotifications();
+
+  // Preview modal state
+  const [previewModal, setPreviewModal] = useState({
+    isOpen: false,
+    lesson: null as any
+  });
+
   // Mock data for demonstration
   const stats = {
     totalStudents: 1247,
@@ -43,6 +54,7 @@ const Index = () => {
       status: "active" as const,
       lastSent: new Date(2024, 6, 1),
       nextScheduled: new Date(2024, 6, 3),
+      content: `Hi! Welcome to English Basics. Today you'll learn how to greet and introduce yourself in a business context.`,
     },
     {
       id: "2", 
@@ -54,6 +66,7 @@ const Index = () => {
       status: "active" as const,
       lastSent: new Date(2024, 6, 2),
       nextScheduled: new Date(2024, 6, 4),
+      content: `Welcome to Digital Marketing! Let's explore social media basics and how to use them for your business.`,
     },
     {
       id: "3",
@@ -63,6 +76,7 @@ const Index = () => {
       studentsEnrolled: 156,
       completionRate: 0,
       status: "draft" as const,
+      content: `Entrepreneurship lesson: How to validate your business ideas with real-world feedback.`,
     },
   ];
 
@@ -76,7 +90,29 @@ const Index = () => {
     { day: "Sun", lessons: 29, completions: 24 },
   ];
 
-  const navigate = useNavigate();
+  // Lesson action handlers
+  const handlePreviewLesson = (lesson: any) => {
+    setPreviewModal({ isOpen: true, lesson });
+  };
+
+  const handleEditLesson = (lessonId: string) => {
+    navigate(`/create-lesson?edit=${lessonId}`);
+    addNotification({
+      title: '📝 Editing lesson',
+      message: `Opened lesson editor for lesson ${lessonId}`,
+      type: 'system',
+      priority: 'low'
+    });
+  };
+
+  const handleScheduleLesson = (lessonId: string) => {
+    addNotification({
+      title: '📅 Lesson scheduled!',
+      message: 'Your lesson has been scheduled for tomorrow at 8:00 AM',
+      type: 'lesson',
+      priority: 'medium'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -218,7 +254,7 @@ const Index = () => {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-foreground">Recent Lessons</h2>
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => navigate('/lessons')}>
               <BookOpen className="w-4 h-4" />
               View All Lessons
             </Button>
@@ -229,9 +265,9 @@ const Index = () => {
               <LessonCard
                 key={lesson.id}
                 {...lesson}
-                onPreview={() => console.log("Preview lesson", lesson.id)}
-                onEdit={() => console.log("Edit lesson", lesson.id)}
-                onSchedule={() => console.log("Schedule lesson", lesson.id)}
+                onPreview={() => handlePreviewLesson(lesson)}
+                onEdit={() => handleEditLesson(lesson.id)}
+                onSchedule={() => handleScheduleLesson(lesson.id)}
               />
             ))}
           </div>
@@ -271,6 +307,15 @@ const Index = () => {
             </Button>
           </div>
         </Card>
+
+        {/* Lesson Preview Modal */}
+        {previewModal.isOpen && previewModal.lesson && (
+          <LessonPreviewModal
+            isOpen={previewModal.isOpen}
+            lesson={previewModal.lesson}
+            onClose={() => setPreviewModal({ isOpen: false, lesson: null })}
+          />
+        )}
       </div>
     </div>
   );

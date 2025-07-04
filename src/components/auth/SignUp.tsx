@@ -94,7 +94,11 @@ const SignUp: React.FC<SignUpProps> = ({ onToggleForm, onSuccess }) => {
       });
 
       if (error) {
-        setError(error.message);
+        if (error.message.includes('email')) {
+          setError('Error sending confirmation email. Please check your email settings or contact support.');
+        } else {
+          setError(error.message);
+        }
         return;
       }
 
