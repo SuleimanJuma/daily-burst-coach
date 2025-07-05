@@ -1,4 +1,5 @@
 import React from 'react';
+import { trackEvent } from '@/lib/analytics';
 import {
   Dialog,
   DialogContent,
@@ -74,6 +75,12 @@ Keep learning! 🚀
 
 
   const handleSendTest = () => {
+    // Track WhatsApp test message event
+    trackEvent('send_whatsapp_test_message', {
+      lessonId: lesson.id,
+      lessonTitle: lesson.title,
+      userAction: 'test_message',
+    });
     if (typeof onSendTestMessage === 'function') {
       onSendTestMessage();
     } else {

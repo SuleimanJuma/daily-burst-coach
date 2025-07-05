@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { DashboardHeader } from "@/components/DashboardHeader";
@@ -92,10 +93,15 @@ const Index = () => {
 
   // Lesson action handlers
   const handlePreviewLesson = (lesson: any) => {
+    trackEvent('preview_lesson', {
+      lessonId: lesson.id,
+      lessonTitle: lesson.title,
+    });
     setPreviewModal({ isOpen: true, lesson });
   };
 
   const handleEditLesson = (lessonId: string) => {
+    trackEvent('edit_lesson', { lessonId });
     navigate(`/create-lesson?edit=${lessonId}`);
     addNotification({
       title: '📝 Editing lesson',
@@ -106,6 +112,7 @@ const Index = () => {
   };
 
   const handleScheduleLesson = (lessonId: string) => {
+    trackEvent('schedule_lesson', { lessonId });
     addNotification({
       title: '📅 Lesson scheduled!',
       message: 'Your lesson has been scheduled for tomorrow at 8:00 AM',
@@ -291,13 +298,13 @@ const Index = () => {
                 <div className="text-xs opacity-90">Plan ahead</div>
               </div>
             </Button>
-            <Button variant="success" className="justify-start h-16">
-              <TrendingUp className="w-5 h-5" />
-              <div className="text-left">
-                <div className="font-medium">View Analytics</div>
-                <div className="text-xs opacity-90">Track performance</div>
-              </div>
-            </Button>
+          <Button variant="success" className="justify-start h-16" onClick={() => navigate('/analytics')}>
+            <TrendingUp className="w-5 h-5" />
+            <div className="text-left">
+              <div className="font-medium">View Analytics</div>
+              <div className="text-xs opacity-90">Track performance</div>
+            </div>
+          </Button>
             <Button variant="streak" className="justify-start h-16">
               <Clock className="w-5 h-5" />
               <div className="text-left">

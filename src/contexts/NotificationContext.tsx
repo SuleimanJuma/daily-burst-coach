@@ -170,24 +170,24 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     }
   }, []);
 
-  // Simulate periodic notifications for demo
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (Math.random() > 0.95) { // 5% chance every minute
-        const lessonTitles = ['Grammar Basics', 'Conversation Skills', 'Business English', 'Digital Marketing'];
-        const randomTitle = lessonTitles[Math.floor(Math.random() * lessonTitles.length)];
-        
-        addNotification({
-          title: '📚 New lesson available!',
-          message: `"${randomTitle}" is ready for your students`,
-          type: 'lesson',
-          priority: 'medium'
-        });
-      }
-    }, 60000); // Check every minute
-
-    return () => clearInterval(interval);
-  }, []);
+  // Demo notifications disabled
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (Math.random() > 0.95) { // 5% chance every minute
+  //       const lessonTitles = ['Grammar Basics', 'Conversation Skills', 'Business English', 'Digital Marketing'];
+  //       const randomTitle = lessonTitles[Math.floor(Math.random() * lessonTitles.length)];
+  //       
+  //       addNotification({
+  //         title: '📚 New lesson available!',
+  //         message: `"${randomTitle}" is ready for your students`,
+  //         type: 'lesson',
+  //         priority: 'medium'
+  //       });
+  //     }
+  //   }, 60000); // Check every minute
+  //
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const value: NotificationContextType = {
     notifications,

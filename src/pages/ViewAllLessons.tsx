@@ -1,5 +1,6 @@
 import React from 'react';
 import { LessonCard } from '@/components/LessonCard';
+import { trackEvent } from '@/lib/analytics';
 
 const ViewAllLessons: React.FC = () => {
   const allLessons = [
@@ -42,9 +43,9 @@ const ViewAllLessons: React.FC = () => {
           <LessonCard
             key={lesson.id}
             {...lesson}
-            onPreview={() => console.log("Preview lesson", lesson.id)}
-            onEdit={() => console.log("Edit lesson", lesson.id)}
-            onSchedule={() => console.log("Schedule lesson", lesson.id)}
+            onPreview={() => trackEvent('preview_lesson', { lessonId: lesson.id, lessonTitle: lesson.title })}
+            onEdit={() => trackEvent('edit_lesson', { lessonId: lesson.id })}
+            onSchedule={() => trackEvent('schedule_lesson', { lessonId: lesson.id })}
           />
         ))}
       </div>

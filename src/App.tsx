@@ -13,6 +13,7 @@ import CreateLesson from "./pages/CreateLesson";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
 import ViewAllLessons from "./pages/ViewAllLessons";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,14 @@ const App = () => (
                 element={
                   <ProtectedRoute fallback={<Auth onSuccess={() => window.location.reload()} />}>
                     <ViewAllLessons />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/analytics" 
+                element={
+                  <ProtectedRoute fallback={<Auth onSuccess={() => window.location.reload()} />}>
+                    <AnalyticsDashboard />
                   </ProtectedRoute>
                 } 
               />

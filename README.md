@@ -55,37 +55,87 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (Database, Auth, Edge Functions)
+- Lucide React (icons)
+- Service Worker (push notifications, offline support)
 
-## How can I deploy this project?
 
-Deploy your app to your favorite platform and share it with the world!
+## Key Features
 
-## Custom Domain Setup
+- **Authentication & Protected Routes:** Secure login/signup with Supabase Auth, context-driven auth state, and protected pages.
+- **Dashboard & Settings:** Modern dashboard UI, responsive settings page, and context-driven notification preferences.
+- **Notification System:** Global notification context, NotificationBell dropdown, push notifications (service worker), and user preferences.
+- **Lesson Management:** View, preview (modal), edit, and schedule lessons. All actions tracked for analytics.
+- **Analytics Dashboard:**
+  - Overview metrics (completion, engagement, active users, lessons sent)
+  - Time-series charts (with date range/interval filtering, CSV export)
+  - Lesson performance (top lessons, export)
+  - User segment analysis
+  - Modular, maintainable analytics components
+- **Event Tracking:**
+  - Client-side event tracking via `trackEvent` (lib/analytics.ts)
+  - Consistent event schema (event_type, metadata, user_id, lesson_id)
+  - (Recommended) Edge Function endpoint for secure, server-side event tracking
+- **Security:**
+  - Supabase RLS enabled, only anon/public keys in frontend
+  - No service/admin keys exposed
+  - Input validation and HTTPS enforced
+- **Offline Support:**
+  - Service worker for push notifications and offline access
+- **Modern UI/UX:**
+  - shadcn-ui, Tailwind, Lucide icons, mobile-first design
+- **CI/CD & Deployment:**
+  - Vercel integration, environment variable management, and custom domain support
 
-To set up a custom domain, follow your hosting provider's instructions.
+
+## Analytics & Event Tracking Architecture
+
+- **Client-side Tracking:**
+  - All user actions (lesson preview, edit, schedule, WhatsApp send, etc.) are tracked via `trackEvent` in `lib/analytics.ts`.
+  - Events are written to the `analytics_events` table in Supabase with a consistent schema.
+- **Server-side/Edge Function Tracking:**
+  - For sensitive or backend-only events, use a Supabase Edge Function as an HTTP endpoint.
+  - The frontend calls this endpoint instead of writing directly to the DB, allowing for validation, enrichment, and security.
+  - This hybrid approach ensures reliable, secure, and comprehensive analytics.
+- **Best Practices:**
+  - Enforce consistent event naming and metadata structure.
+  - Validate all incoming event data in Edge Functions.
+  - Use RLS to restrict analytics data access by user/role.
 
 ---
 
+
+## Service Worker & Push Notifications
+
+- A service worker (`public/service-worker.js`) is registered for push notifications and offline support.
+- Notifications are managed via NotificationContext and can be triggered by lesson actions or system events.
+- User preferences for notifications are stored in context and settings.
+
 ## Case Study: Building Daily Burst Coach
+
 
 ### Problem Tackled
 
 The goal was to create a modern, secure, and scalable learning platform for WhatsApp-based microlearning. The platform needed:
 - User authentication and protected routes
 - A dashboard with navigation and settings management
-- Integration with Supabase for backend and authentication
+- Integration with Supabase for backend, authentication, and analytics
+- A robust notification and analytics system
 - A clean, maintainable codebase with environment/config best practices
+
 
 ### Technologies Used
 - **React** (with Vite) for the frontend
-- **Supabase** for authentication and backend
+- **Supabase** for authentication, backend, analytics, and Edge Functions
 - **React Router** for navigation and protected routes
 - **TanStack React Query** for data fetching and caching
 - **Tailwind CSS** for UI styling
+- **shadcn-ui** for UI components
 - **Lucide React** for icons
 - **Vercel** for hosting
 
-### Architectural Decisions
+
+### Architectural Decisions & Key Features
 
 - **Context-based Authentication (AuthContext):**
   - We created an `AuthContext` using React's Context API to manage authentication state (user, session, loading, signOut, signIn) globally. This avoids prop drilling and makes it easy to access auth state anywhere.
@@ -115,19 +165,26 @@ The goal was to create a modern, secure, and scalable learning platform for What
     3. Compose complex pages from these building blocks.
     4. Document props and usage for each component.
 
+
 - **Supabase Integration:**
-  - Used Supabase for authentication, database, and backend logic. All user data and auth flows are managed via Supabase’s client library.
-  - **Why:** Supabase provides a secure, scalable, and developer-friendly backend with built-in RLS for data protection.
+  - Used Supabase for authentication, database, backend logic, and analytics/event tracking.
+  - Implemented Postgres functions for analytics: `get_analytics_overview`, `get_analytics_timeseries`, `get_lesson_performance`, `get_user_segments`.
+  - (Recommended) Use Edge Functions for secure, server-side event tracking.
+  - **Why:** Supabase provides a secure, scalable, and developer-friendly backend with built-in RLS for data protection and powerful analytics.
   - **How to do it:**
     1. Create a Supabase project and enable RLS.
     2. Store `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env`.
     3. Initialize Supabase in `src/lib/supabaseClient.ts`.
-    4. Use Supabase methods for signup, login, and CRUD operations.
+    4. Use Supabase methods for signup, login, CRUD, and analytics.
     5. Write RLS policies to restrict data access by user.
-    6. Test all auth and data flows for security.
+    6. Implement and call Postgres functions for analytics.
+    7. (Optional) Create Edge Functions for event tracking.
+    8. Test all auth, data, and analytics flows for security.
+
 
 - **Environment Variable Management:**
   - Used `.env` for all secrets and public keys, ensured `.env` is git-ignored, and documented how to set these in Vercel.
+  - Only public/anon keys are used in the frontend; no service/admin keys are ever exposed.
   - **Why:** Keeps secrets out of source control and makes deployment secure and portable.
   - **How to do it:**
     1. Add all keys to `.env` (prefix frontend keys with `VITE_`).
@@ -144,12 +201,14 @@ The goal was to create a modern, secure, and scalable learning platform for What
     3. Use `useQuery` for fetching, `useMutation` for updates.
     4. Use context for global state (auth, toasts, etc.).
 
+
 - **Error Handling & User Feedback:**
   - Implemented robust error handling in all forms and async flows, with user-friendly messages and visual feedback (alerts, toasts, etc.).
+  - Notification system provides instant feedback for lesson actions, analytics, and errors.
   - **Why:** Improves UX, helps users recover from errors, and aids debugging.
   - **How to do it:**
     1. Use `try/catch` in all async functions.
-    2. Store error/success messages in state.
+    2. Store error/success messages in state or context.
     3. Show alerts or toasts for all important events.
     4. Handle both Supabase and network errors.
     5. Provide loading indicators for async actions.
@@ -190,12 +249,13 @@ The goal was to create a modern, secure, and scalable learning platform for What
     3. Validate and sanitize all user input.
     4. Use HTTPS endpoints everywhere.
 
+
 - **Testing & Debugging:**
-  - Manually tested all flows (signup, login, protected routes, settings, logout) and used browser dev tools for debugging.
+  - Manually tested all flows (signup, login, protected routes, settings, notifications, analytics, logout) and used browser dev tools for debugging.
   - **Why:** Ensures reliability and a smooth user experience.
   - **How to do it:**
     1. Test every user flow in the browser.
-    2. Use Supabase dashboard to verify data.
+    2. Use Supabase dashboard to verify data and analytics events.
     3. Check console for errors and fix them promptly.
 
 - **CI/CD & Deployment:**
@@ -207,8 +267,9 @@ The goal was to create a modern, secure, and scalable learning platform for What
     3. Push to main to trigger deploy.
     4. Monitor deployments in Vercel dashboard.
 
+
 - **Documentation & Case Study:**
-  - Wrote a comprehensive README with setup, development, architecture, deployment, and a case study. Included step-by-step guides and rationale for each decision.
+  - Wrote a comprehensive README with setup, development, architecture, analytics/event tracking, deployment, and a case study. Included step-by-step guides and rationale for each decision.
   - **Why:** Makes the project accessible to all skill levels and helps future contributors.
   - **How to do it:**
     1. Document every major step and decision.
@@ -216,3 +277,7 @@ The goal was to create a modern, secure, and scalable learning platform for What
     3. Update docs as the project evolves.
 
 ---
+---
+## License
+
+MIT License. See LICENSE file for details. Plagiarism is strictly prohibited.
